@@ -50,6 +50,7 @@ while true; do
 	for entry in $VIDEOPATH/*
 	do
 		echo $entry
+		
 		#ugly line.  Fist part gets all the parts of the movie, which is then searched for the line "height"
 		#it will return two lines: height & coded height.  head -1 selects the first (height)
 		#then, cut splits the string (height=XXX) by the delimiter "=", and loads the second value (XXX) to a varible
@@ -67,13 +68,14 @@ while true; do
 			prev_height=$height
 			/home/doug/Desktop/disp_case/control_computer/stop_single.sh -l $LOCATION > /dev/null
 			/home/doug/Desktop/disp_case/control_computer/start_independant.sh -l $LOCATION > /dev/null
-			sleep .5
+			sleep .25
 		fi
 
 		#play video
 		#-loglevel panic will cause the thing to display only serious errors.  Append the "location" variable to the IP.
 		IP=udp://239.0.1.23:1234$LOCATION
 		ffmpeg -loglevel panic -re -i $entry -vcodec copy -f avi -an $IP
+
 
 	done
 
