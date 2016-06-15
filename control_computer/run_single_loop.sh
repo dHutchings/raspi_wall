@@ -1,7 +1,9 @@
 #!/bin/bash
 
 #usage:
-#./run_single_loop.sh -f PATH_TO_VIDEOS -l Location (1,2,3,4)
+#./run_single_loop.sh -p PATH_TO_VIDEOS -l Location (1,2,3,4) -f status file name
+
+#status file is a file with the number of times that the loop has executed.
 
 #start by parsing options, using the technique found on the stack overflow "How do I parse command line arguments in bash"
 #Defaults
@@ -9,6 +11,9 @@ VIDEOPATH="."
 echo $VIDEOPATH
 
 LOCATION="" #currently, no location
+
+STATUS_FILE=""
+LOOP_COUNT=0
 
 while [[ $# -gt 1 ]]
 do
@@ -21,6 +26,11 @@ do
 		;;
 		-l| --location)
 		LOCATION="$2"
+		shift
+		;;
+		-f| --file)
+		STATUS_FILE="$2".status
+		echo $LOOP_COUNT > $STATUS_FILE 
 		shift
 		;;
 		*)
@@ -78,6 +88,14 @@ while true; do
 
 
 	done
+	#incriment loop_count variable
+	LOOP_COUNT=$((LOOP_COUNT + 1))
+
+	if [[ -n STATUS_FILE ]]; then #if the STATUS_FILE variable is NOT empty.
+		#write my loop count to the file, for reference by outside processes.
+		echo $LOOP_COUNT > $STATUS_FILE
+
+	fi
 
 done
 
