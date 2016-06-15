@@ -103,5 +103,5 @@ while true; do
 
 done
 
-#shutdown all on close
-clean_up()
+#shutdown on close
+clean_up
