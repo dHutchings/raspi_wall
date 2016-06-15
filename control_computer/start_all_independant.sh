@@ -4,15 +4,12 @@
 #uses kill -TERM -$BASHPID (found on stack overflow) to kill all processies who's parent was this script.
 trap "echo ENDING ; rm *.status ; kill -TERM -$BASHPID" INT
 
+echo "My PID is" $BASHPID
 
 ./run_single_loop.sh -l 1 -p ../videos/top_left/ -f 1 &
-echo $!
 ./run_single_loop.sh -l 2 -p ../videos/top_right/ -f 2 &
-echo $!
 ./run_single_loop.sh -l 3 -p ../videos/bottom_left/ -f 3 &
-echo $!
 ./run_single_loop.sh -l 4 -p ../videos/bottom_right/ -f 4 &
-echo $!
 
 
 #start to read status files, to see if I've looped through all the videos at least once.
