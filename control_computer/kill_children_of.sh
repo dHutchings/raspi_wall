@@ -39,21 +39,34 @@ echo $array
 count=0 #count because of the triple-nature of this loop, i need to keep track...
 
 array_to_kill=()
+possible_kill="" #possible kill, may need to reject based on names...
 
 for line in "${array[@]}" ; do
 	if [[ $count -eq '0' ]]; then
-		#if this child's ID does NOT eq the parent id
-		if [[ $line -ne $ID ]]; then
+		#if this child's ID does NOT eq the parent id, or the ID of this own script.  Don't want to kill the script that's doing the killing....
+		if [[ $line -ne $ID ]] && [[ $line -ne $BASHPID ]]; then
 			#kill it.
-			echo "killing" $line
-			kill -TERM $line
+			#echo "I may kill" $line
+			possible_kill=$line
+
 		fi
 	elif [[ $count -eq '1' ]]; then
 		: #we don't care about the parent's id
 		#echo " 1 " $line
-	elif [[ $count -eq '2' ]]; then
-		: #we don't care about the names...
-		#echo " 2 " $line
+	elif [[ $count -eq '2' ]]; then\
+		if [[ -n "$possible_kill" ]] && [[ $line == "run_single_loop" ]]; then
+			#kill it.
+			#echo "I will kill " $possible_kill $line
+
+			kill -TERM $possible_kill
+			#wait till it's actually dead to move on.
+			wait $possible_kill
+
+			#then reset possible kill
+			possible_kill=""
+		fi
+
+
 	fi
 
 	#make sure that count is properly handled...
@@ -63,5 +76,3 @@ for line in "${array[@]}" ; do
 		count=$((count + 1))
 	fi
 done
-
-echo "There are now" $(grep $ID | wc -l) "processes from the parent... should be only 1"

@@ -14,6 +14,7 @@ echo "My PID is" $BASHPID
 
 #start to read status files, to see if I've looped through all the videos at least once.
 declare -a all_status_files=("1.status" "2.status" "3.status" "4.status")
+#declare -a all_status_files=("1.status")
 #have I finished my first run?
 first_run_over=0
 
@@ -39,9 +40,15 @@ done
 echo "Done with all first runs"
 
 
-./kill_children_of.sh -i $BASHPID
+#source so it stays as the same PID
+source kill_children_of.sh -i $BASHPID
 
 echo "Killed all the kids!"
+
+while true; do
+	echo "hi"
+	sleep .5
+done
 
 #sends ctrl-z siginal to itself, which also gets the nice erasure of status files.
 kill -INT -$BASHPID

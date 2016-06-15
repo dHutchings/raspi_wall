@@ -43,13 +43,15 @@ echo "PATH TO VIDEOS IS" $VIDEOPATH
 
 function clean_up {
 	#function to be called at the end, or on interrupt.
+	#i need to Kill the ffmpeg process, since I can't wait for it to end...
+	kill -TERM $FFMPEG_PROCESS
 	/home/doug/Desktop/disp_case/control_computer/stop_single.sh -l $LOCATION
-	echo "Exiting"
+	echo "Exiting Shutdown of Monitor #" $LOCATION
 	exit
 }
 
 #magic line here that'll make it easier to ctrl-c out of this thing.
-trap "clean_up" INT
+trap "clean_up" TERM
 
 
 
@@ -84,7 +86,9 @@ while true; do
 		#play video
 		#-loglevel panic will cause the thing to display only serious errors.  Append the "location" variable to the IP.
 		IP=udp://239.0.1.23:1234$LOCATION
-		ffmpeg -loglevel panic -re -i $entry -vcodec copy -f avi -an $IP
+		ffmpeg -loglevel panic -re -i $entry -vcodec copy -f avi -an $IP &
+		FFMPEG_PROCESS=$!
+		wait $FFMPEG_PROCESS
 
 
 	done
