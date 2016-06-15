@@ -70,11 +70,12 @@ while true; do
 		width=$(ffprobe -v quiet -show_format -show_streams $entry | grep width | head -1 | cut -d "=" -f2)
 		
 		if [ "$prev_width" -eq "$width" ] && [ "$prev_height" -eq "$height" ]; then
-			echo "resolution ok"
+			:
+			#echo "resolution ok"
 			#do nothing.
 		else
 
-			echo "need to change resolution"
+			#echo "need to change resolution"
 			echo "new resolution is Height" $height "width" $width
 			prev_width=$width
 			prev_height=$height
