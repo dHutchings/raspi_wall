@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "start"
-
 #usage
 #./start_independant -l LOCATION
 
