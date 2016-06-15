@@ -39,9 +39,9 @@ done
 echo "Done with all first runs"
 
 
+./kill_children_of.sh -i $BASHPID
 
-
-
+echo "Killed all the kids!"
 
 #sends ctrl-z siginal to itself, which also gets the nice erasure of status files.
 kill -INT -$BASHPID
