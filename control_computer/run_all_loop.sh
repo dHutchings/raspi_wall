@@ -1,6 +1,6 @@
 #!/bin/bash
 
-UNIFIED_VIDEOPATH="/home/doug/Desktop/disp_case/videos/all_monitors"
+VIDEOPATH="/home/doug/Desktop/disp_case/videos/all_monitors"
 
 
 
