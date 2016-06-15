@@ -14,8 +14,37 @@ echo $!
 ./run_single_loop.sh -l 4 -p ../videos/bottom_right/ -f 4 &
 echo $!
 
-while true
+
+#start to read status files, to see if I've looped through all the videos at least once.
+declare -a all_status_files=("1.status" "2.status" "3.status" "4.status")
+#have I finished my first run?
+first_run_over=0
+
+
+while [ "$first_run_over" -eq "0" ]
 do
-	:
+	done_with_all=1
+	for i in "${all_status_files[@]}"; do
+		if [[ $(cat $i) -eq 0 ]]; then
+			done_with_all=0
+		fi
+
+	done
+
+	if [[ done_with_all -eq 1 ]]; then
+		first_run_over=1
+	fi
+
+	sleep .5
 done
-#kill all processies started by this script on INT.
+
+
+echo "Done with all first runs"
+
+
+
+
+
+
+#sends ctrl-z siginal to itself, which also gets the nice erasure of status files.
+kill -INT -$BASHPID
